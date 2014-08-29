@@ -1,0 +1,13 @@
+gitolite:
+  user:
+    user: git
+    home: /srv/git
+    home_mode: 
+  additional_users:
+    - someone1
+    - someone2
+  rc:
+    umask: 0077
+    local_code: "$rc{GL_ADMIN_BASE}/local"
+  admin_pub: "some_pub_key"
+  
