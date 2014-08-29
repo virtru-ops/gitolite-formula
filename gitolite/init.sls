@@ -8,7 +8,12 @@
 {% set git_user_home_mode = git_user_info.get('home_mode', '0700') %}
 {% set git_user_fullname = git_user_info.get('fullname', 'Gitolite') %}
 {% set git_group_users = gitolite.get('git_group_users', []) %}
-{% set gitolite_admin_pub = gitolite.get('admin_pub', '') %}
+{% set gitolite_admin = gitolite.get('admin', {}) %}
+{% set gitolite_admin_name = gitolite_admin.get('name', '') %}
+{% set gitolite_admin_pub = gitolite_admin.get('pub', '') %}
+
+# DO NOT EXECUTE UNLESS REQUIRED PILLARS ARE PRESENT
+{% if gitolite_admin_name and gitolite_admin_pub %}
 
 # Ensure the gitolite user exists
 {{ git_user_name }}_name:
@@ -49,10 +54,10 @@ gitolite3:
     - managed
     - user: git
     - group: git
-    - name: /tmp/raven.pub
+    - name: /tmp/{{ gitolite_admin_name }}.pub
     - contents: {{ gitolite_admin_pub }}
   cmd.run:
-    - name: gitolite setup -pk /tmp/admin.pub
+    - name: gitolite setup -pk /tmp/{{ gitolite_admin_name }}.pub
     - creates: {{ git_user_home }}/.gitolite
     - user: {{ git_user_name }}
     - group: {{ git_user_group }}
@@ -70,3 +75,4 @@ customize gitolite:
     - mode: 0640
     - template: jinja
 
+{% endif %}

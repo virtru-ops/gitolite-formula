@@ -9,5 +9,7 @@ gitolite:
   rc:
     umask: 0077
     local_code: "$rc{GL_ADMIN_BASE}/local"
-  admin_pub: "some_pub_key"
+  admin: 
+    - name: "username of the admin"
+    - pub: "the public key for the admin"
   
