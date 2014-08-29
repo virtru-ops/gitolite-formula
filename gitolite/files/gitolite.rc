@@ -1,3 +1,5 @@
+{% set local_code = salt['pillar.get']('gitolite:rc:local_code', '') %}
+{% set umask = salt['pillar.get']('gitolite:rc:umask', '0077') %}
 # configuration variables for gitolite
 
 # This file is in perl syntax.  But you do NOT need to know perl to edit it --
@@ -18,7 +20,7 @@
 
     # default umask gives you perms of '0700'; see the rc file docs for
     # how/why you might change this
-    UMASK                           =>  {{ umask }},
+    UMASK                           =>  {{ "%04o" | format(salt['pillar.get']('gitolite:rc:umask')) }},
 
     # look for "git-config" in the documentation
     GIT_CONFIG_KEYS                 =>  '',
@@ -72,7 +74,9 @@
         # or you can use this, which lets you put everything in a subdirectory
         # called "local" in your gitolite-admin repo.  For a SECURITY WARNING
         # on this, see http://gitolite.com/gitolite/non-core.html#pushcode
-    LOCAL_CODE                =>  {{ local_code }},
+        {% if local_code %}
+    	LOCAL_CODE                =>  "{{ salt['pillar.get']('gitolite:rc:local_code') }}",
+        {% endif %}
 
     # ------------------------------------------------------------------
 
