@@ -20,7 +20,7 @@
 
     # default umask gives you perms of '0700'; see the rc file docs for
     # how/why you might change this
-    UMASK                           =>  {{ salt['pillar.get']('gitolite:rc:umask') }},
+    UMASK                           =>  {{ umask }},
 
     # look for "git-config" in the documentation
     GIT_CONFIG_KEYS                 =>  '',
