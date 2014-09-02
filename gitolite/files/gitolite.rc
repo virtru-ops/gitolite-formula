@@ -1,5 +1,5 @@
 {% set local_code = salt['pillar.get']('gitolite:rc:local_code', '') %}
-{% set umask = salt['pillar.get']('gitolite:rc:umask', '0077') %}
+{% set umask = salt['pillar.get']('gitolite:rc:umask', 0077) %}
 # configuration variables for gitolite
 
 # This file is in perl syntax.  But you do NOT need to know perl to edit it --
