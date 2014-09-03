@@ -7,8 +7,138 @@ gitolite:
     - someone1
     - someone2
   rc:
-    umask: 0077
+    # BEWARE UMASK MUST BE A STRING not a yaml number
+    umask: "0077" 
+
     local_code: "$rc{GL_ADMIN_BASE}/local"
+
+    enable: # The ENABLE option
+      #######
+      #
+      # Default Enabled Gitolite options
+      #
+      #######
+
+      ##
+      # Default Commands
+      ##
+      - help
+      - desc
+      - info
+      - perms
+      - writable
+      
+      ##
+      # Default FEATURES
+      ##
+
+      # essential (unless you're using smart-http mode)
+      - ssh-authkeys
+
+      # creates git-config enties from gitolite.conf file entries like 'config foo.bar = baz'
+      - git-config
+            
+      # creates git-daemon-export-ok files; if you don't use git-daemon, comment this out
+      - daemon
+
+      # creates projects.list file; if you don't use gitweb, comment this out
+      - gitweb
+
+      #######
+      #
+      # Beyond this point the FEATURES are disabled by default
+      #
+      #######
+      
+      ##
+      # other available commands commands here, but these are disabled by default
+      ##
+      - create
+      - fork
+      - mirror
+      - readme
+      - sskm
+      - D
+
+      ##
+      # user-visible behaviour
+      ##
+
+      # prevent wild repos auto-create on fetch/clone
+      - no-create-on-read
+
+      # no auto-create at all (don't forget to enable the 'create' command!)
+      - no-auto-create
+
+      # access a repo by another (possibly legacy) name
+      - Alias
+
+      # give some users direct shell access.  See documentation in
+      # sts.html for details on the following two choices.
+      # "Shell $ENV{HOME}/.gitolite.shell-users",
+      - Shell alice bob
+
+      - option default.roles-1 = ... etc.
+      - set-default-roles
+
+      # show more detailed messages on deny
+      - expand-deny-messages
+
+      # show a message of the day
+      - Motd
+
+      ##
+      # system admin stuff
+      ##
+
+      # enable mirroring (don't forget to set the HOSTNAME too!)
+      - Mirroring
+
+      # allow people to submit pub files with more than one key in them
+      - ssh-authkeys-split
+
+      # selective read control hack
+      - partial-copy
+
+      # manage local, gitolite-controlled, copies of read-only upstream repos
+      - upstream
+
+      # updates 'description' file instead of 'gitweb.description' config item
+      - cgit
+
+      # allow repo-specific hooks to be added
+      - repo-specific-hooks
+
+      ##
+      # performance, logging, monitoring...
+      ##
+
+      # be nice
+      - renice 10
+
+      # log CPU times (user, system, cumulative user, cumulative system)
+      - CpuTime
+
+      ##
+      # syntactic_sugar for gitolite.conf and included files
+      ##
+
+      # allow backslash-escaped continuation lines in gitolite.conf
+      - continuation-lines
+
+      # create implicit user groups from directory names in keydir/
+      - keysubdirs-as-groups
+
+      # allow simple line-oriented macros
+      - macros
+
+      ##
+      # Kindergarten mode
+      ##
+
+      # disallow various things that sensible people shouldn't be doing anyway
+      - Kindergarten
+
   admin: 
     - name: "username of the admin"
     - pub: "the public key for the admin"
