@@ -1,5 +1,16 @@
 {% set local_code = salt['pillar.get']('gitolite:rc:local_code', '') %}
 {% set umask = salt['pillar.get']('gitolite:rc:umask', "0077") %}
+{% set gitolite_enable_options = salt['pillar.get']('gitolite:rc:enable', [
+    'help',
+    'desc',
+    'info',
+    'perms',
+    'writable',
+    'ssh-authkeys',
+    'git-config',
+    'daemon',
+    'gitweb',
+]) %}
 # configuration variables for gitolite
 
 # This file is in perl syntax.  But you do NOT need to know perl to edit it --
@@ -83,108 +94,9 @@
     # List of commands and features to enable
 
     ENABLE => [
-
-        # COMMANDS
-
-            # These are the commands enabled by default
-            'help',
-            'desc',
-            'info',
-            'perms',
-            'writable',
-
-            # Uncomment or add new commands here.
-            # 'create',
-            # 'fork',
-            # 'mirror',
-            # 'readme',
-            # 'sskm',
-            # 'D',
-
-        # These FEATURES are enabled by default.
-
-            # essential (unless you're using smart-http mode)
-            'ssh-authkeys',
-
-            # creates git-config enties from gitolite.conf file entries like 'config foo.bar = baz'
-            'git-config',
-
-            # creates git-daemon-export-ok files; if you don't use git-daemon, comment this out
-            'daemon',
-
-            # creates projects.list file; if you don't use gitweb, comment this out
-            'gitweb',
-
-        # These FEATURES are disabled by default; uncomment to enable.  If you
-        # need to add new ones, ask on the mailing list :-)
-
-        # user-visible behaviour
-
-            # prevent wild repos auto-create on fetch/clone
-            # 'no-create-on-read',
-            # no auto-create at all (don't forget to enable the 'create' command!)
-            # 'no-auto-create',
-
-            # access a repo by another (possibly legacy) name
-            # 'Alias',
-
-            # give some users direct shell access.  See documentation in
-            # sts.html for details on the following two choices.
-            # "Shell $ENV{HOME}/.gitolite.shell-users",
-            # 'Shell alice bob',
-
-            # set default roles from lines like 'option default.roles-1 = ...', etc.
-            # 'set-default-roles',
-
-            # show more detailed messages on deny
-            # 'expand-deny-messages',
-
-            # show a message of the day
-            # 'Motd',
-
-        # system admin stuff
-
-            # enable mirroring (don't forget to set the HOSTNAME too!)
-            # 'Mirroring',
-
-            # allow people to submit pub files with more than one key in them
-            # 'ssh-authkeys-split',
-
-            # selective read control hack
-            # 'partial-copy',
-
-            # manage local, gitolite-controlled, copies of read-only upstream repos
-            # 'upstream',
-
-            # updates 'description' file instead of 'gitweb.description' config item
-            # 'cgit',
-
-            # allow repo-specific hooks to be added
-            # 'repo-specific-hooks',
-
-        # performance, logging, monitoring...
-
-            # be nice
-            # 'renice 10',
-
-            # log CPU times (user, system, cumulative user, cumulative system)
-            # 'CpuTime',
-
-        # syntactic_sugar for gitolite.conf and included files
-
-            # allow backslash-escaped continuation lines in gitolite.conf
-            # 'continuation-lines',
-
-            # create implicit user groups from directory names in keydir/
-            # 'keysubdirs-as-groups',
-
-            # allow simple line-oriented macros
-            # 'macros',
-
-        # Kindergarten mode
-
-            # disallow various things that sensible people shouldn't be doing anyway
-            # 'Kindergarten',
+        {% for command_or_feature in gitolite_enable_options %}
+        '{{ command_or_feature }}',
+        {% endfor %}
     ],
 
 );
